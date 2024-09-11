@@ -1,6 +1,11 @@
 body 
 {
-    background-color: #707070;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('images/Hotline\ Miami\ Background.jpg');
+
 }
 
 #title 
