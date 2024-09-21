@@ -1,10 +1,16 @@
 body 
 {
-    background-color: #707070;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('images/Hotline\ Miami\ Background.jpg');
+
 }
 
 #title 
 {
+    
     font-size: 40px;
     width: 100%;
     margin: 2% 5%;
@@ -15,12 +21,14 @@ body
 
 #loginDiv
 {
+    font-family: 'Montserrat', sans-serif;
     font-size: 30px;
     width: 70%;
     margin-left: 15%;
     padding: 25px;
     background-color: #b2b2b2;
 }
+
 
 #loggedInDiv
 {

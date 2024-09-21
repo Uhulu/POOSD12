@@ -1,0 +1,79 @@
+<html>
+<head>
+	<title>Contacts Page</title>
+	<script type="text/javascript" src="js/code.js"></script>
+    <link href="css/contacts.css" rel="stylesheet">	
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+	
+	<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function() 
+	{
+		readCookie();
+		loadContacts();
+	}, false);
+	</script>
+	
+</head>
+<body>
+
+<h1 id="title">Contacts</h1>
+
+<div id="loggedInDiv">
+	<span id="userName"></span><br />
+	<button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
+</div>
+
+<div id="accessUIDiv">
+	<br />
+
+	<input type="text" id="searchText" placeholder="Color To Search For"/>
+	<button type="button" id="searchColorButton" class="buttons" onclick="searchColor();"> Search Color </button><br />
+	<span id="colorSearchResult"></span>or
+	<p id="colorList">
+	</p><br /><br />
+
+</div>
+
+
+
+</div>
+<!--add contact form-->
+<div class="addContacts">
+    <form id="addMe" action="" method="post">
+        <input type="text" id="contactTextFirst" placeholder="First Name" required>
+        <input type="text" id="contactTextLast" placeholder="Last Name" required>
+        <input type="text" id="contactTextNumber" placeholder="XXX-XXX-XXXX" required
+            pattern="^[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4}$">
+        <input type="text" id="contactTextEmail" placeholder="name@email.com"
+            pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" required>
+        <button type="button" id="addContactButton" class="buttons font" onclick="addContact();"> Add Contact
+        </button>
+		<span id="contactAddResult"></span>
+    </form>
+</div>
+
+<!--base table???-->
+<div class="tables">
+	<div class="tbl-content" id="contactsTable">
+		<table id="contacts" cellpadding="0" cellspacing="0" border="0">
+			<thread>
+				<tr>
+					<th>First&nbspName</th>
+					<th>Last&nbspName</th>
+					<th>Email</th>
+					<th>Phone</th>
+					<th></th>
+				</tr>
+			</thread>
+			<tbody id="tbody"></tbody>
+		</table>
+	</div>
+</div>
+</div>
+
+
+
+
+</body>
+</html>
+
