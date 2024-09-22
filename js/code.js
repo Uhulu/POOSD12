@@ -157,14 +157,14 @@ function readCookie()
 		}
 	}
 	
-	if( userId < 0 )
-	{
-		window.location.href = "index.html";
-	}
-	else
-	{
-//		document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
-	}
+// 	if( userId < 0 )
+// 	{
+// 		window.location.href = "index.html";
+// 	}
+// 	else
+// 	{
+// //		document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
+// 	}
 }
 
 function doLogout()
@@ -176,43 +176,18 @@ function doLogout()
 	window.location.href = "index.html";
 }
 
-function addColor()
-{
-	let newColor = document.getElementById("colorText").value;
-	document.getElementById("colorAddResult").innerHTML = "";
-
-	let tmp = {color:newColor,userId,userId};
-	let jsonPayload = JSON.stringify( tmp );
-
-	let url = urlBase + '/AddColor.' + extension;
-	
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("colorAddResult").innerHTML = "Color has been added";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("colorAddResult").innerHTML = err.message;
-	}
-	
-}
-
 function addContact() {
 
     let firstname = document.getElementById("contactTextFirst").value;
     let lastname = document.getElementById("contactTextLast").value;
     let phonenumber = document.getElementById("contactTextNumber").value;
     let emailaddress = document.getElementById("contactTextEmail").value;
+
+    //check for shitty data
+    if (!validContact(firstname, lastname, phonenumber, emailaddress )) {
+    document.getElementById("contactAddResult").innerHTML = "invalid Contact Data";
+    return;
+   }   
 
     let tmp = {
         firstName: firstname,
@@ -236,11 +211,18 @@ function addContact() {
                 console.log("Contact has been added");
 
                 document.getElementById("contactAddResult").innerHTML = "Conctact was Added"
-                document.getElementById("contactAddResult").reset(); //Empties all the fields 
-                // reload contacts table and switch view to show
-                //loadContacts();
-                //showTable();
-				//Functions don't exist right now
+                //document.getElementById("contactAddResult").reset(); //Empties all the fields 
+
+                // Clear the fields after adding
+                document.getElementById("contactTextFirst").value = "";
+                document.getElementById("contactTextLast").value = "";
+                document.getElementById("contactTextNumber").value = "";
+                document.getElementById("contactTextEmail").value = "";
+
+                //need to implement a refresh function after adding 
+                loadContacts();//this should refresh the list after adding 
+
+                
             }
         };
         xhr.send(jsonPayload);
@@ -252,7 +234,7 @@ function addContact() {
 function loadContacts() {
     let tmp = {
         search: "",
-        userId: userId
+        userId: userId //cookieeee
     };
 
     let jsonPayload = JSON.stringify(tmp);
@@ -261,7 +243,7 @@ function loadContacts() {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-
+    //API check and call
     try {
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -270,6 +252,7 @@ function loadContacts() {
                     console.log(jsonObject.error);
                     return;
                 }
+                //Generate rows of info from users contacts
                 let text = "<table border='1'>"
                 for (let i = 0; i < jsonObject.results.length; i++) {
                     ids[i] = jsonObject.results[i].ID
@@ -278,7 +261,12 @@ function loadContacts() {
                     text += "<td id='last_Name" + i + "'><span>" + jsonObject.results[i].LastName + "</span></td>";
                     text += "<td id='email" + i + "'><span>" + jsonObject.results[i].EmailAddress + "</span></td>";
                     text += "<td id='phone" + i + "'><span>" + jsonObject.results[i].PhoneNumber + "</span></td>";
-                    
+                    //delete and edit buttons for the form
+                    text += "<td>" +
+                        "<button type='button' id='edit_button" + i + "' class='w3-button w3-circle w3-lime' onclick='edit_row(" + i + ")'>" + "<span class='glyphicon glyphicon-edit'></span>" + "</button>" +
+                        "<button type='button' id='save_button" + i + "' value='Save' class='w3-button w3-circle w3-lime' onclick='save_row(" + i + ")' style='display: none'>" + "<span class='glyphicon glyphicon-saved'></span>" + "</button>" +
+                        "<button type='button' onclick='delete_row(" + i + ")' class='w3-button w3-circle w3-amber'>" + "<span class='glyphicon glyphicon-trash'></span> " + "</button>" + "</td>";
+                    text += "<tr/>"
                 }
                 text += "</table>"
                 document.getElementById("tbody").innerHTML = text;
@@ -288,52 +276,6 @@ function loadContacts() {
     } catch (err) {
         console.log(err.message);
     }
-}
-
-
-function searchColor()
-{
-	let srch = document.getElementById("searchText").value;
-	document.getElementById("colorSearchResult").innerHTML = "";
-	
-	let colorList = "";
-
-	let tmp = {search:srch,userId:userId};
-	let jsonPayload = JSON.stringify( tmp );
-
-	let url = urlBase + '/SearchColors.' + extension; //PHP call 
-	
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("colorSearchResult").innerHTML = "Color(s) has been retrieved";
-				let jsonObject = JSON.parse( xhr.responseText );
-				
-				for( let i=0; i<jsonObject.results.length; i++ )
-				{
-					colorList += jsonObject.results[i];
-					if( i < jsonObject.results.length - 1 )
-					{
-						colorList += "<br />\r\n";
-					}
-				}
-				
-				document.getElementsByTagName("p")[0].innerHTML = colorList;
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("colorSearchResult").innerHTML = err.message;
-	}
-	
 }
 
 function validLoginForm(logName, logPass) {
@@ -379,6 +321,69 @@ function validLoginForm(logName, logPass) {
         return false;
     }
     return true;
+
+}
+
+function validContact(first,last,phone,email){
+    var firstError = lastError = phoneError = emailError = true;
+
+    if(first == ""){
+        console.log("First Name Blank");
+    }
+    else {
+        console.log("Valid First Name");
+        firstError = false; //Valid entry sets it to false
+    }
+
+    if(last == ""){
+        console.log("Last Name Blank");
+    }
+    else {
+        console.log("Valid Last Name");
+        lastError = false; //Valid entry sets it to false
+    }
+    
+    if (phone == "") {
+        console.log("PHONE IS BLANK");
+    }
+    else {
+        var regex = /^(\(?\d{3}\)?[-\s\.]?)\d{3}[-\s\.]?\d{4}$/;
+
+
+        if (regex.test(phone) == false) {
+            console.log("PHONE IS NOT VALID");
+        }
+
+        else {
+
+            console.log("PHONE IS VALID");
+            phoneError = false; //Valid entry sets it to false
+        }
+    }
+
+    if (email == "") {
+        console.log("EMAIL IS BLANK");
+    }
+    else {
+        var regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/; //confusing ass regex line
+
+        if (regex.test(email) == false) {
+            console.log("EMAIL IS NOT VALID");
+        }
+
+        else {
+
+            console.log("EMAIL IS VALID");
+            emailError = false;
+        }
+    }
+
+    if((firstError ||lastError || phoneError || emailError) == true){
+        return false;
+    } 
+
+    return true;
+       
 
 }
 
