@@ -210,7 +210,7 @@ function addContact() {
             if (this.readyState == 4 && this.status == 200) {
                 console.log("Contact has been added");
 
-                document.getElementById("contactAddResult").innerHTML = "Conctact was Added"
+                document.getElementById("contactAddResult").innerHTML = "Contact was Added"
                 //document.getElementById("contactAddResult").reset(); //Empties all the fields 
 
                 // Clear the fields after adding
@@ -265,10 +265,13 @@ function searchContacts() {
     for (let i = 0; i < tableRows.length; i++) {
         const firstNameCell = tableRows[i].getElementsByTagName("td")[0]; // First name column
         const lastNameCell = tableRows[i].getElementsByTagName("td")[1]; // Last name column
-
+        const emailCell = tableRows[i].getElementsByTagName("td")[2]; // Email column
+        const phoneCell = tableRows[i].getElementsByTagName("td")[3]; // Phone number column
         if (firstNameCell && lastNameCell) {
             const firstNameText = firstNameCell.textContent || firstNameCell.innerText; // First name text
             const lastNameText = lastNameCell.textContent || lastNameCell.innerText; // Last name text
+            const emailText = emailCell.textContent || emailCell.innerText; // Email text
+            const phoneText = phoneCell.textContent || phoneCell.innerText; // Phone text
 
             // Check if any part of the search matches the first name or last name
             let matchFound = false;
@@ -281,7 +284,7 @@ function searchContacts() {
 
             // If a match is found, add the contact to the <p> element
             if (matchFound) {
-                const contactInfo = `First Name: ${firstNameText}, Last Name: ${lastNameText}`;
+                const contactInfo = `First Name: ${firstNameText}, Last Name: ${lastNameText}, Email: ${emailText}, Phone: ${phoneText}`;
                 const contactEntry = document.createElement("p");
                 contactEntry.textContent = contactInfo;
                 contactListElement.appendChild(contactEntry);
