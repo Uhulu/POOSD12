@@ -116,7 +116,7 @@ function doSignup() {
                 firstName = jsonObject.firstName;
                 lastName = jsonObject.lastName;
                 saveCookie();
-				window.location.href = "color.html";
+				window.location.href = "contacts.html";
             }
         };
 
