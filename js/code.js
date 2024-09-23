@@ -157,14 +157,14 @@ function readCookie()
 		}
 	}
 	
-// 	if( userId < 0 )
-// 	{
-// 		window.location.href = "index.html";
-// 	}
-// 	else
-// 	{
-// //		document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
-// 	}
+ 	if( userId < 0 )
+ 	{
+ 		window.location.href = "index.html";
+ 	}
+ 	else
+ 	{
+		document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
+	}
 }
 
 function doLogout()
@@ -231,12 +231,25 @@ function addContact() {
     }
 }
 
+function scrollToBottom() {
+    var contactList = document.getElementById('contactList');
+    contactList.scrollTop = contactList.scrollHeight;
+}
+
+function scrollPageToBottom() {
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth' // Optional: adds a smooth scrolling effect
+    });
+}
+
 function searchContacts() {
     const searchInput = document.getElementById("searchText"); // Input box for search
     const searchTerms = searchInput.value.toUpperCase().split(' '); // Get search query and split into words
     const contactsTable = document.getElementById("contacts"); // Table containing contact data
     const tableRows = contactsTable.getElementsByTagName("tr"); // Get all rows in the table
     const contactListElement = document.getElementById("contactList"); // The <p> element to display results
+
 
     // Clear previous search results
     contactListElement.innerHTML = "";
@@ -265,6 +278,7 @@ function searchContacts() {
                 const contactEntry = document.createElement("p");
                 contactEntry.textContent = contactInfo;
                 contactListElement.appendChild(contactEntry);
+            
             }
         }
     }
@@ -273,7 +287,12 @@ function searchContacts() {
     if (contactListElement.innerHTML === "") {
         contactListElement.innerHTML = "No contacts found.";
     }
+    scrollPageToBottom();
 }
+
+
+
+
 
 
 function loadContacts() {
@@ -315,6 +334,7 @@ function loadContacts() {
                 }
                 text += "</table>"
                 document.getElementById("tbody").innerHTML = text;
+                scrollPageToBottom();
             }
         };
         xhr.send(jsonPayload);
