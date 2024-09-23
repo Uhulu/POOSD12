@@ -116,7 +116,7 @@ function doSignup() {
                 firstName = jsonObject.firstName;
                 lastName = jsonObject.lastName;
                 saveCookie();
-				window.location.href = "contacts.html";
+				window.location.href = "index.html";
             }
         };
 
@@ -308,9 +308,9 @@ function loadContacts() {
                     text += "<td id='phone" + i + "'><span>" + jsonObject.results[i].PhoneNumber + "</span></td>";
                     //delete and edit buttons for the form
                     text += "<td>" +
-                        "<button type='button' id='edit_button" + i + "' class='w3-button w3-circle w3-lime' onclick='edit_row(" + i + ")'>" + "<span class='glyphicon glyphicon-edit'></span>" + "</button>" +
-                        "<button type='button' id='save_button" + i + "' value='Save' class='w3-button w3-circle w3-lime' onclick='save_row(" + i + ")' style='display: none'>" + "<span class='glyphicon glyphicon-saved'></span>" + "</button>" +
-                        "<button type='button' onclick='delete_row(" + i + ")' class='w3-button w3-circle w3-amber'>" + "<span class='glyphicon glyphicon-trash'></span> " + "</button>" + "</td>";
+                        "<button type='button' id='edit_button" + i + "' class='w3-button w3-circle w3-lime' onclick='edit_row(" + i + ")'>" + "<span class='glyphicon glyphicon-edit'></span> Edit</button>" +
+                        "<button type='button' id='save_button" + i + "' value='Save' class='w3-button w3-circle w3-lime' onclick='save_contact(" + i + ")' style='display: none'>" + "<span class='glyphicon glyphicon-saved'></span> Save</button>" +
+                        "<button type='button' onclick='delete_contact(" + i + ")' class='w3-button w3-circle w3-amber'>" + "<span class='glyphicon glyphicon-trash'></span> Delete</button>" + "</td>";
                     text += "<tr/>"
                 }
                 text += "</table>"
@@ -430,6 +430,110 @@ function validContact(first,last,phone,email){
     return true;
        
 
+}
+
+function delete_contact(x) {
+    var namef_val = document.getElementById("first_Name" + x).innerText;
+    var namel_val = document.getElementById("last_Name" + x).innerText;
+    nameOne = namef_val.substring(0, namef_val.length);
+    nameTwo = namel_val.substring(0, namel_val.length);
+    let check = confirm('Confirm deletion of contact: ' + nameOne + ' ' + nameTwo);
+    if (check === true) {
+        document.getElementById("row" + x + "").outerHTML = "";
+        let tmp = {
+            firstName: nameOne,
+            lastName: nameTwo,
+            userId: userId
+        };
+
+        let jsonPayload = JSON.stringify(tmp);
+
+
+        
+
+        let url = urlBase + '/DeleteContacts.' + extension;
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        try {
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+
+                    console.log("Contact has been deleted");
+                    loadContacts();
+                }
+            };
+            xhr.send(jsonPayload);
+        } catch (err) {
+            console.log(err.message);
+        }
+
+    };
+
+}
+
+function save_contact(x) {
+    var namef_val = document.getElementById("namef_text" + x).value;
+    var namel_val = document.getElementById("namel_text" + x).value;
+    var email_val = document.getElementById("email_text" + x).value;
+    var phone_val = document.getElementById("phone_text" + x).value;
+    var id_val = ids[x]
+
+    document.getElementById("first_Name" + x).innerHTML = namef_val;
+    document.getElementById("last_Name" + x).innerHTML = namel_val;
+    document.getElementById("email" + x).innerHTML = email_val;
+    document.getElementById("phone" + x).innerHTML = phone_val;
+
+    document.getElementById("edit_button" + x).style.display = "inline-block";
+    document.getElementById("save_button" + x).style.display = "none";
+
+    let tmp = {
+        phoneNumber: phone_val,
+        emailAddress: email_val,
+        newFirstName: namef_val,
+        newLastName: namel_val,
+        id: id_val
+    };
+
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = urlBase + '/UpdateContacts.' + extension;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log("Contact has been updated");
+                loadContacts();
+            }
+        };
+        xhr.send(jsonPayload);
+    } catch (err) {
+        console.log(err.message);
+    }
+}
+
+function edit_row(id) {
+    document.getElementById("edit_button" + id).style.display = "none";
+    document.getElementById("save_button" + id).style.display = "inline-block";
+
+    var firstNameI = document.getElementById("first_Name" + id);
+    var lastNameI = document.getElementById("last_Name" + id);
+    var email = document.getElementById("email" + id);
+    var phone = document.getElementById("phone" + id);
+
+    var namef_data = firstNameI.innerText;
+    var namel_data = lastNameI.innerText;
+    var email_data = email.innerText;
+    var phone_data = phone.innerText;
+
+    firstNameI.innerHTML = "<input type='text' id='namef_text" + id + "' value='" + namef_data + "'>";
+    lastNameI.innerHTML = "<input type='text' id='namel_text" + id + "' value='" + namel_data + "'>";
+    email.innerHTML = "<input type='text' id='email_text" + id + "' value='" + email_data + "'>";
+    phone.innerHTML = "<input type='text' id='phone_text" + id + "' value='" + phone_data + "'>"
 }
 
 function validSignUpForm(fName, lName, user, pass) {
