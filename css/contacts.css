@@ -8,9 +8,7 @@
     font-family: "Poppins", sans-serif;
 }
 
-#title {
-    font-size: 30px;
-}
+
 
 body {
     display: flex;
@@ -53,14 +51,24 @@ body {
 }
 
 
+
 .wrapper-main {
     width: 1000px;
     margin: 0 auto;
 
 }
 
+#title {
+    font-size: 30px;
+    text-shadow: 6px 6px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+}
+
 #accessUIDiv {
-    width: 1000px;
+    width: 900px;
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .2);
     backdrop-filter: blur(20px);
@@ -69,6 +77,20 @@ body {
     border-radius: 10px;
     padding: 30px 40px;
     
+}
+
+#accessUIDiv #searchContactButton{
+    background-color: #0f1010;
+    color: white;
+}
+
+
+
+#accessUIDiv #addContactButton{
+
+    background-color: #0f1010;
+    color: white;
+
 }
 
 
@@ -84,6 +106,17 @@ table {
     text-align: left;
     color: white;
 }
+#contactsTable {
+    height: 300px; /* Set a fixed height */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+#contactList {
+    height: 80px; /* Set a fixed height */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+
 
 th, td {
     padding: 12px 15px;
@@ -105,7 +138,7 @@ tbody tr:nth-child(even) {
 
 /* Hover effect on rows */
 tbody tr:hover {
-    background-color: #ffffff;
+    backdrop-filter: blur(30px);
     cursor: pointer;
 }
 
@@ -140,6 +173,10 @@ button {
 
 .w3-amber {
     background-color: #FF5722;
+    color: white; /* Ensure text color contrasts with background */
+    padding: 5px 10px; /* Adjust padding to fit text */
+    font-size: 12px; /* Adjust font size to fit text */
+    font-weight: bold;
 }
 
 button:hover {
