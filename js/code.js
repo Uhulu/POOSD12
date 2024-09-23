@@ -231,6 +231,51 @@ function addContact() {
     }
 }
 
+function searchContacts() {
+    const searchInput = document.getElementById("searchText"); // Input box for search
+    const searchTerms = searchInput.value.toUpperCase().split(' '); // Get search query and split into words
+    const contactsTable = document.getElementById("contacts"); // Table containing contact data
+    const tableRows = contactsTable.getElementsByTagName("tr"); // Get all rows in the table
+    const contactListElement = document.getElementById("contactList"); // The <p> element to display results
+
+    // Clear previous search results
+    contactListElement.innerHTML = "";
+
+    // Loop through all the rows in the table
+    for (let i = 0; i < tableRows.length; i++) {
+        const firstNameCell = tableRows[i].getElementsByTagName("td")[0]; // First name column
+        const lastNameCell = tableRows[i].getElementsByTagName("td")[1]; // Last name column
+
+        if (firstNameCell && lastNameCell) {
+            const firstNameText = firstNameCell.textContent || firstNameCell.innerText; // First name text
+            const lastNameText = lastNameCell.textContent || lastNameCell.innerText; // Last name text
+
+            // Check if any part of the search matches the first name or last name
+            let matchFound = false;
+            for (let term of searchTerms) {
+                if (firstNameText.toUpperCase().indexOf(term) > -1 || lastNameText.toUpperCase().indexOf(term) > -1) {
+                    matchFound = true;
+                    break; // Exit loop if a match is found
+                }
+            }
+
+            // If a match is found, add the contact to the <p> element
+            if (matchFound) {
+                const contactInfo = `First Name: ${firstNameText}, Last Name: ${lastNameText}`;
+                const contactEntry = document.createElement("p");
+                contactEntry.textContent = contactInfo;
+                contactListElement.appendChild(contactEntry);
+            }
+        }
+    }
+
+    // If no results found, display a message
+    if (contactListElement.innerHTML === "") {
+        contactListElement.innerHTML = "No contacts found.";
+    }
+}
+
+
 function loadContacts() {
     let tmp = {
         search: "",

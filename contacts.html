@@ -30,14 +30,14 @@
 		<br />
 
 		<input type="text" id="searchText" placeholder="Contact To Search For"/>
-		<button type="button" id="searchColorButton" class="buttons" onclick="searchColor();"> Search Contact </button><br />
-		<span id="colorSearchResult"></span>or
-		<p id="colorList">
+		<button type="button" id="searchContactButton" class="buttons" onclick="searchContacts();"> Search Contact </button><br /> <!--JS function Call-->
+		<span id="contactSearchresult"></span>
+		<p id="contactList">
 		</p><br /><br />
 
 	</div>
 
-	<!--add contact form-->
+	<!--contact form-->
 	<div class="addContacts">
 		<form id="addMe" action="" method="post">
 			<input type="text" id="contactTextFirst" placeholder="First Name" required>
@@ -46,7 +46,7 @@
 				pattern="^\d{3}[-\s.]?\d{3}[-\s.]?\d{4}$" />
 			<input type="text" id="contactTextEmail" placeholder="name@email.com"
 				pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required> 
-			<button type="button" id="addContactButton" class="buttons font" onclick="addContact();"> Add Contact
+			<button type="button" id="addContactButton" class="buttons font" onclick="addContact();"> Add Contact <!--JS function Call-->
 			</button>
 			<span id="contactAddResult"></span>
 		</form>
