@@ -1,8 +1,4 @@
 # POOSD12
 
-Base Stack has been setup
-
-To do
--API 
--FrontEnd
--Get Pretty
+This is our contact manager website called "Contacts Hotline"
+Here is [Our Website](http://poosd12.xyz/index.html)
