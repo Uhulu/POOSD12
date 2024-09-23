@@ -254,6 +254,13 @@ function searchContacts() {
     // Clear previous search results
     contactListElement.innerHTML = "";
 
+    // Check if search input is empty
+    if (searchInput.value.trim() === "") {
+        // Display "No contacts found" message
+        contactListElement.innerHTML = "No contacts found.";
+        return; // Exit the function early
+    }
+
     // Loop through all the rows in the table
     for (let i = 0; i < tableRows.length; i++) {
         const firstNameCell = tableRows[i].getElementsByTagName("td")[0]; // First name column
