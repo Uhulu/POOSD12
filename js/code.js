@@ -73,7 +73,7 @@ function doSignup() {
     let password = document.getElementById("password").value;
 
     if (!validSignUpForm(firstName, lastName, username, password)) {
-        document.getElementById("signupResult").innerHTML = "invalid signup";
+        document.getElementById("signupResult").innerHTML = "Invalid password: must include at least 1 uppercase letter, number, and special character.";
         return;
     }
 
